@@ -14,7 +14,7 @@ type Rectangle struct {
 }
 
 func circleArea(c *Circle) float64 {
-	// If I need to change global variables inside of function scope, then need to use pointers
+	// If I need to change global variables inside of function, then need to use pointers
 	// like c.x = 2, c.y = 3, c.r = 5
 	// without pointers, the values will be returned after exiting function scope
 	fmt.Println("Circle data:", c.x, c.y, c.r)
