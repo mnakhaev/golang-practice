@@ -58,13 +58,6 @@ func (s *APIServer) configureRouter() {
 	s.router.HandleFunc("/hello", s.handleHello())
 }
 
-// handleHello returns the whole interface instead of just func
-func (s *APIServer) handleHello() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		io.WriteString(w, "Hello!")
-	}
-}
-
 // configureStore ...
 func (s *APIServer) configureStore() error {
 	// Question: why not accessing from s.store from the beginning?
@@ -78,4 +71,11 @@ func (s *APIServer) configureStore() error {
 
 	s.store = st
 	return nil
+}
+
+// handleHello returns the whole interface instead of just func
+func (s *APIServer) handleHello() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		io.WriteString(w, "Hello!")
+	}
 }

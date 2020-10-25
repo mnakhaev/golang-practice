@@ -5,6 +5,7 @@ type Config struct {
 }
 
 // NewConfig returns pointer on config
+// TODO: so it returns new copy of config or what?
 func NewConfig() *Config {
 	return &Config{}
 }
