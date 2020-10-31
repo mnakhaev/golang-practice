@@ -1,6 +1,7 @@
 package store
 
 import (
+	"fmt"
 	"strings"
 	"testing"
 )
@@ -23,7 +24,8 @@ func TestStore(t *testing.T, databaseURL string) (*Store, func(...string)) {
 	return s, func(tables ...string) {
 		// number of tables can be zero
 		if len(tables) > 0 {
-			if _, err := s.db.Exec("TRUNCATE %s CASCADE ", strings.Join(tables, ", ")); err != nil {
+			// TODO: check that
+			if _, err := s.db.Exec(fmt.Sprintf("TRUNCATE %s CASCADE", strings.Join(tables, ", "))); err != nil {
 				t.Fatal(err)
 			}
 		}

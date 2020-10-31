@@ -12,7 +12,7 @@ type Store struct {
 	UserRepository *UserRepository
 }
 
-// New returns pointer on store (not Config as in example)
+// New returns pointer on store
 func New(config *Config) *Store {
 	return &Store{
 		config: config,
@@ -46,7 +46,7 @@ func (s *Store) Close() {
 // Example of such call: store.User().Create()
 func (s *Store) User() *UserRepository {
 	if s.UserRepository != nil {
-		return nil
+		return s.UserRepository
 	}
 
 	s.UserRepository = &UserRepository{store: s}
