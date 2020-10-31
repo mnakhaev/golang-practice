@@ -8,6 +8,15 @@ type UserRepository struct {
 
 // Create accepts and returns needed model
 func (r *UserRepository) Create(u *models.User) (*models.User, error) {
+	// check if user is valid. if OK - run BeforeCreate callback
+	if err := u.Validate(); err != nil {
+		return nil, err
+	}
+
+	if err := u.BeforeCreate(); err != nil {
+		return nil, err
+	}
+
 	// postgres doesn't return IDs by default, but we need to get this ID for successfully created user
 	// this ID will be used later somehow
 	// Scan method is used to map returned string to passed arguments (should be pointers!)
