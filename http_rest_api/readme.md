@@ -13,3 +13,12 @@ Useful article - [click](https://postgrespro.ru/docs/postgrespro/9.5/tutorial-cr
 10. Run migration for test DB: ` migrate -path migrations -database "postgres://localhost/restapi_test?sslmode=disable&user=postgres&password=qwe123QWE" up`
 
 `model` - keeps all database models  
+
+Store - kind of black-box instance, which provides public methods to work with the data.
+It can contain multiple repositories: 
+- User repository (create user / find in DB by parameters)
+- To be updated
+
+Store -> `config.go` - config for the store
+
+Models - contains models of data representation.

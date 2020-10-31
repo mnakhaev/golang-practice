@@ -3,7 +3,7 @@ package store
 import (
 	"database/sql"
 
-	_ "github.com/lib/pq" // Anonymous import
+	_ "github.com/lib/pq" // Anonymous import to skip import of methods
 )
 
 type Store struct {
@@ -12,8 +12,8 @@ type Store struct {
 	UserRepository *UserRepository
 }
 
-// New returns pointer on store
-func New(config *Config) *Store {
+// NewStore returns pointer on store
+func NewStore(config *Config) *Store {
 	return &Store{
 		config: config,
 	}

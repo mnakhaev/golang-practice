@@ -61,8 +61,8 @@ func (s *APIServer) configureRouter() {
 // configureStore ...
 func (s *APIServer) configureStore() error {
 	// Question: why not accessing from s.store from the beginning?
-	// Why store.New ?
-	st := store.New(s.config.Store)
+	// Why store.NewStore ?
+	st := store.NewStore(s.config.Store)
 
 	//Check for if err := s.store.Open(); err != nil {
 	if err := st.Open(); err != nil {

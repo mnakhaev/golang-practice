@@ -6,6 +6,7 @@ type UserRepository struct {
 	store *Store
 }
 
+// Create accepts and returns needed model
 func (r *UserRepository) Create(u *models.User) (*models.User, error) {
 	// postgres doesn't return IDs by default, but we need to get this ID for successfully created user
 	// this ID will be used later somehow
@@ -20,7 +21,7 @@ func (r *UserRepository) Create(u *models.User) (*models.User, error) {
 	return u, nil
 }
 
-// FindByEmail method is needed for authorization
+// FindByEmail method is needed for authorization to find user
 func (r *UserRepository) FindByEmail(email string) (*models.User, error) {
 	u := &models.User{}
 	// QueryRow returns only one result
