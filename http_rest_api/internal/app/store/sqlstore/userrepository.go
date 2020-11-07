@@ -1,33 +1,34 @@
-package store
+package sqlstore
 
-import "github.com/gopherschool/http-rest-api/internal/app/models"
+import (
+	"database/sql"
+	"github.com/gopherschool/http-rest-api/internal/app/models"
+	"github.com/gopherschool/http-rest-api/internal/app/store"
+)
 
 type UserRepository struct {
 	store *Store
 }
 
 // Create accepts and returns needed model
-func (r *UserRepository) Create(u *models.User) (*models.User, error) {
+func (r *UserRepository) Create(u *models.User) error {
 	// check if user is valid. if OK - run BeforeCreate callback
 	if err := u.Validate(); err != nil {
-		return nil, err
+		return err
 	}
 
 	if err := u.BeforeCreate(); err != nil {
-		return nil, err
+		return err
 	}
 
 	// postgres doesn't return IDs by default, but we need to get this ID for successfully created user
 	// this ID will be used later somehow
 	// Scan method is used to map returned string to passed arguments (should be pointers!)
-	if err := r.store.db.QueryRow(
+	return r.store.db.QueryRow(
 		"INSERT INTO users (email, encrypted_password) VALUES ($1, $2) RETURNING id",
 		u.Email,
 		u.EncryptedPassword,
-	).Scan(&u.ID); err != nil {
-		return nil, err
-	}
-	return u, nil
+	).Scan(&u.ID)
 }
 
 // FindByEmail method is needed for authorization to find user
@@ -43,6 +44,10 @@ func (r *UserRepository) FindByEmail(email string) (*models.User, error) {
 		&u.Email,
 		&u.EncryptedPassword,
 	); err != nil {
+		if err == sql.ErrNoRows {
+			return nil, store.ErrRecordNotFound
+		}
+
 		return nil, err
 	}
 	return u, nil
@@ -58,6 +63,10 @@ func (r *UserRepository) FindByID(id string) (*models.User, error) {
 		&u.Email,
 		&u.EncryptedPassword,
 	); err != nil {
+		if err == sql.ErrNoRows {
+			return nil, store.ErrRecordNotFound
+		}
+
 		return nil, err
 	}
 	return u, nil

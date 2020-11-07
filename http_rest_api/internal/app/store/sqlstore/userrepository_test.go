@@ -1,8 +1,9 @@
-package store_test
+package sqlstore_test
 
 import (
 	"github.com/gopherschool/http-rest-api/internal/app/models"
 	"github.com/gopherschool/http-rest-api/internal/app/store"
+	"github.com/gopherschool/http-rest-api/internal/app/store/sqlstore"
 	"github.com/stretchr/testify/assert"
 	"math/rand"
 	"strconv"
@@ -11,23 +12,24 @@ import (
 
 // tests for Create method
 func TestUserRepository_Create(t *testing.T) {
-	s, teardown := store.TestStore(t, databaseURL)
+	db, teardown := sqlstore.TestDB(t, databaseURL)
 	defer teardown("users") // cleaning users table
 
+	s := sqlstore.NewStore(db)
 	u := models.TestUser(t)
 	u.ID = strconv.Itoa(rand.Intn(1000))
-	user, err := s.User().Create(u)
-	assert.NoError(t, err) // check that no error raised
-	assert.NotNil(t, user) // check that user is not nil
+	assert.NoError(t, s.User().Create(u)) // check that no error raised
+	assert.NotNil(t, u)                   // check that user is not nil
 }
 
 func TestUserRepository_FindByEmail(t *testing.T) {
-	s, teardown := store.TestStore(t, databaseURL)
+	db, teardown := sqlstore.TestDB(t, databaseURL)
 	defer teardown("users") // cleaning users table
 
+	s := sqlstore.NewStore(db)
 	email := "user123@example.org"
 	_, err := s.User().FindByEmail(email)
-	assert.Error(t, err)
+	assert.EqualError(t, err, store.ErrRecordNotFound.Error())
 
 	u := models.TestUser(t)
 	u.Email = email
@@ -38,13 +40,16 @@ func TestUserRepository_FindByEmail(t *testing.T) {
 }
 
 func TestUserRepository_FindByID(t *testing.T) {
-	s, teardown := store.TestStore(t, databaseURL)
+	db, teardown := sqlstore.TestDB(t, databaseURL)
 	defer teardown("users")
 
-	u1, err := s.User().Create(models.TestUser(t))
-	if err != nil {
+	s := sqlstore.NewStore(db)
+	u1 := models.TestUser(t)
+	if err := s.User().Create(u1); err != nil {
 		t.Fatal(err)
 	}
+	u2 := models.TestUser(t)
+
 	u2, err := s.User().FindByID(u1.ID)
 	assert.NoError(t, err)
 	assert.NotNil(t, u2)
