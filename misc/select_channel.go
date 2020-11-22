@@ -10,6 +10,7 @@ type Worker struct {
 	id int
 }
 
+// process func receives data from channel for a worker
 func (w Worker) process(c chan int) {
 	for {
 		data := <-c

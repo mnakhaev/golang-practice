@@ -4,6 +4,8 @@ import (
 	"fmt"
 )
 
+// Test exercise #1 from https://golangs.org/goroutines
+
 // sourceGopher passes elems from array to channel
 func sourceGopher(downstream chan string) {
 	for _, elem := range [5]string{"a", "b", "b", "cc", "dd"} {
