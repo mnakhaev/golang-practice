@@ -9,10 +9,10 @@ import (
 // User models doesn't know anything about interaction with DB
 // Repositories will be responsible for this kind of interaction
 type User struct {
-	ID                string
-	Email             string
-	Password          string
-	EncryptedPassword string
+	ID                string `json:"id"`
+	Email             string `json:"email"`
+	Password          string `json:"password,omitempty"` // is password is empty, then don't return it
+	EncryptedPassword string `json:"-"`                  // do not render encr password
 }
 
 func (u *User) Validate() error {
@@ -36,6 +36,17 @@ func (u *User) BeforeCreate() error {
 		u.EncryptedPassword = enc
 	}
 	return nil
+}
+
+// Sanitize redefines private attributes that shouldn't be available outside
+func (u *User) Sanitize() {
+	u.Password = ""
+}
+
+// ComparePasswords check that password from session request corresponds to encrypted
+// will return true if comparison is OK
+func (u *User) ComparePasswords(password string) bool {
+	return bcrypt.CompareHashAndPassword([]byte(u.EncryptedPassword), []byte(password)) == nil
 }
 
 func encryptString(s string) (string, error) {
