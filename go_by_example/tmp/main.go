@@ -1,9 +1,40 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math/rand"
+	"time"
+)
+
+type Worker struct {
+	id int
+}
+
+func (w Worker) process(c chan int) {
+	for {
+		data := <-c
+		fmt.Printf("Worker %d received %d\n", w.id, data)
+		time.Sleep(time.Millisecond * 1000)
+	}
+}
 
 func main() {
-	c1 := make(chan string, 1)
-	c1 <- "msg"
-	fmt.Println(<-c1)
+	//c := make(chan int, 20)
+	c := make(chan int)
+	for i := 0; i < 5; i++ { // i is number of workers
+		worker := Worker{id: i}
+		go worker.process(c) // execution time depends on number in channel
+	}
+
+	for {
+		select {
+		case c <- rand.Int():
+			fmt.Println("Generated new value!", <-c)
+		case t := <-time.After(time.Millisecond * 100): // timeout is another method
+			fmt.Println("Timeout after", t)
+			//default:
+			//	fmt.Println("Skipping value...")
+		}
+		time.Sleep(time.Millisecond * 50)
+	}
 }
