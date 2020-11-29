@@ -9,7 +9,7 @@ import (
 // User models doesn't know anything about interaction with DB
 // Repositories will be responsible for this kind of interaction
 type User struct {
-	ID                string `json:"id"`
+	ID                int    `json:"id"`
 	Email             string `json:"email"`
 	Password          string `json:"password,omitempty"` // is password is empty, then don't return it
 	EncryptedPassword string `json:"-"`                  // do not render encr password

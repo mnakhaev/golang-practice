@@ -3,13 +3,12 @@ package teststore
 import (
 	"github.com/gopherschool/http-rest-api/internal/app/models"
 	"github.com/gopherschool/http-rest-api/internal/app/store"
-	"strconv"
 )
 
 // UserRepository structure for tests
 type UserRepository struct {
 	store *Store
-	users map[string]*models.User
+	users map[int]*models.User
 }
 
 // Create test user in `users` map
@@ -23,25 +22,25 @@ func (r *UserRepository) Create(u *models.User) error {
 		return err
 	}
 
-	r.users[u.Email] = u
-	u.ID = strconv.Itoa(len(r.users))
+	u.ID = len(r.users) + 1
+	r.users[u.ID] = u
 
 	return nil
 }
 
 // FindByEmail in `users` map
 func (r *UserRepository) FindByEmail(email string) (*models.User, error) {
-	u, ok := r.users[email]
-	if !ok {
-		return nil, store.ErrRecordNotFound
+	for _, u := range r.users {
+		if u.Email == email {
+			return u, nil
+		}
 	}
-
-	return u, nil
+	return nil, store.ErrRecordNotFound
 }
 
 // TODO: implement till the end
 // FindByID in `users` map
-func (r *UserRepository) FindByID(ID string) (*models.User, error) {
+func (r *UserRepository) FindByID(ID int) (*models.User, error) {
 	u, ok := r.users[ID]
 	if !ok {
 		return nil, store.ErrRecordNotFound

@@ -6,7 +6,6 @@ import (
 	"github.com/gopherschool/http-rest-api/internal/app/store/sqlstore"
 	"github.com/stretchr/testify/assert"
 	"math/rand"
-	"strconv"
 	"testing"
 )
 
@@ -17,7 +16,7 @@ func TestUserRepository_Create(t *testing.T) {
 
 	s := sqlstore.NewStore(db)
 	u := models.TestUser(t)
-	u.ID = strconv.Itoa(rand.Intn(1000))
+	u.ID = rand.Intn(1000)
 	assert.NoError(t, s.User().Create(u)) // check that no error raised
 	assert.NotNil(t, u)                   // check that user is not nil
 }
