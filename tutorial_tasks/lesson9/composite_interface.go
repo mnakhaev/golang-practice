@@ -58,7 +58,8 @@ func walkerFunc(w walker) {
 }
 
 func main() {
-	var c animalNew = &cow{}
+	//var c animalNew = &cow{}
+	c := &cow{}
 	walkerFunc(c)
 
 	var e bird = &eagle{}
