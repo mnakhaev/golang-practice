@@ -33,8 +33,8 @@ func main() {
 			fmt.Println("Generated new value!", <-c)
 		case t := <-time.After(time.Millisecond * 100): // timeout is another method
 			fmt.Println("Timeout after", t)
-			//default:
-			//	fmt.Println("Skipping value...")
+		default:
+			fmt.Println("Skipping value...")
 		}
 		time.Sleep(time.Millisecond * 50)
 	}

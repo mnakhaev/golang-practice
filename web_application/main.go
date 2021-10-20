@@ -2,23 +2,49 @@ package main
 
 import (
 	"fmt"
+	"github.com/gorilla/mux"
 	"net/http"
+
+	"./views"
+	//"../web_application/views"
 )
 
-func handlerFunc(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "text/html") // needed for correct display of HTML code below
-	if r.URL.Path == "/" {
-		fmt.Fprint(w, "<h1>Welcome to my site!</h1>")
-	} else if r.URL.Path == "/contact" {
-		fmt.Fprint(w, "To get in touch, please send email to <a href=\"mailto:test@example.com\">test@example.com</a>")
-	} else {
-		w.WriteHeader(http.StatusNotFound)
-		fmt.Fprint(w, "<h1>We couldn't find the page you were looking for</h1>"+
-			"<p>Please email us</p>")
+var homeView, contactView *views.View
+
+func home(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/html")
+	if err := homeView.Template.Execute(w, nil); err != nil {
+		panic(err)
 	}
 }
 
+func contact(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/html")
+	if err := contactView.Template.Execute(w, nil); err != nil {
+		panic(err)
+	}
+}
+
+func faq(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/html")
+	fmt.Fprint(w, "<h1>Frequently asked questions</h1>" +
+		"<p>To be updated soon...</p>")
+}
+
+func notFound(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/html")
+	fmt.Fprint(w, "<h1>Current page is not yet implemented...</h1>")
+}
+
+
 func main() {
-	http.HandleFunc("/", handlerFunc)
-	http.ListenAndServe(":8080", nil)
+	homeView = views.NewView("views/home.gohtml")
+	contactView = views.NewView("views/contact.gohtml")
+
+	r := mux.NewRouter()
+	r.HandleFunc("/", home)
+	r.HandleFunc("/contact", contact)
+	r.HandleFunc("/faq", faq)
+	r.NotFoundHandler = http.HandlerFunc(notFound)
+	http.ListenAndServe(":8080", r)
 }
