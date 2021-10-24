@@ -37,8 +37,8 @@ func main() {
 	// the order isn't strict - any of these two functions may be firstly executed
 	// example: one, one, one, two, one, one, two, one, one
 
-	// UPD: also added c3 wit hbigger delay
-	for i := 0; i < 15; i++ {
+	// UPD: also added c3 with bigger delay
+	for i := 0; i < 10; i++ {
 		select {
 		case msg1 := <-c1:
 			fmt.Println("Received from channel #1:", msg1)

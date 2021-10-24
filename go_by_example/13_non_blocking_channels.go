@@ -10,7 +10,7 @@ func main() {
 	messagesBufferized := make(chan string, 1)
 	signals := make(chan bool)
 
-	// if value exists in messages, then it will be received. otherwise make as in default
+	// if value exists in messages, then it will be received. otherwise, make as in default
 	select {
 	case msg := <-messages:
 		fmt.Println("Received message:", msg)
@@ -18,7 +18,7 @@ func main() {
 		fmt.Println("No message received")
 	}
 
-	// if value exists in messages, then it will be sent. otherwise make as in default
+	// if value exists in messages, then it will be sent. otherwise, make as in default
 	msg := "Hello!"
 	select {
 	case messages <- msg: // works for bufferized channels! otherwise, will be done by default
@@ -27,7 +27,7 @@ func main() {
 		fmt.Println("No message sent")
 	}
 
-	// if value exists in messages, then it will be sent. otherwise make as in default
+	// if value exists in messages, then it will be sent. otherwise, make as in default
 	select {
 	case messagesBufferized <- msg: // works for bufferized channels! otherwise, will be done by default
 		fmt.Println("Sent value", msg, "to messages channel")

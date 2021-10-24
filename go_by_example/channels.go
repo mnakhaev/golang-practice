@@ -17,21 +17,13 @@ func main() {
 		close(c)
 	}()
 
-	for i := 1; i < 10; i++ {
+	// Read values from the channel
+	for i := 1; i < 10; i++ { // or just `for {`
 		msg, open := <-c
 		if !open {
 			break
 		}
-		fmt.Println("Got value from the channel: ", msg)
-	}
-
-	//Read values from channel
-	for {
-		msg, open := <-c
-		if !open {
-			break
-		}
-		fmt.Println("Got value from the channel: ", msg)
+		fmt.Println("1. Got value from the channel: ", msg)
 	}
 
 }
