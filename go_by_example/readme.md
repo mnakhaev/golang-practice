@@ -1,0 +1,1 @@
+Current directory contains examples from [Golang by example](https://gobyexample.com)
