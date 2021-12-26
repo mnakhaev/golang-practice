@@ -12,7 +12,7 @@ func main() {
 		c1 <- "Result 1"
 	}()
 
-	// Timeout is less then sleep interval (2 seconds) => program will always finish by timeout
+	// Timeout is less than sleep interval (2 seconds) => program will always finish by timeout
 	select {
 	case res1 := <-c1:
 		fmt.Println("#1: Channel value:", res1)

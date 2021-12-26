@@ -37,11 +37,11 @@ func main() {
 	}(&wg)
 	wg.Wait()
 
-	totalTimeChanda := time.Since(t3).Seconds()
+	totalTimeCycle := time.Since(t3).Seconds()
 
 	fmt.Printf(
-		"Consequent code took %.2f seconds, concurrent - %.2f, chanda -  %.2f\n",
-		totalTimeConsequent, totalTimeConcurrent, totalTimeChanda,
+		"Consequent code took %.2f seconds, concurrent - %.2f, in cycle -  %.2f\n",
+		totalTimeConsequent, totalTimeConcurrent, totalTimeCycle,
 	)
 
 	fmt.Printf("main function has finished")
