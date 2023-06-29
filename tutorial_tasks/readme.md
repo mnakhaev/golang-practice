@@ -1,1 +1,0 @@
-Current directory contains examples from [tutorial](http://golang-book.ru)

@@ -7,7 +7,7 @@ import (
 func main() {
 	c := make(chan int)
 
-	//write down values to channel in one goroutine
+	// write down values to channel in one goroutine
 	go func() {
 		for i := 1; i < 10; i++ {
 			c <- i

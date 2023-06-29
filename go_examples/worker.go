@@ -20,7 +20,7 @@ func (w Worker) process(c chan int) {
 }
 
 func main() {
-	//c := make(chan int, 20)
+	// c := make(chan int, 20)
 	c := make(chan int)
 	for i := 0; i < 5; i++ { // i is number of workers
 		worker := Worker{id: i}
